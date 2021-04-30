@@ -43,6 +43,7 @@ router.post("/uncheckout/:id", async (req, res) => {
       },
       { new: true }
     );
+
     res.status(200).send("Device retrieved");
   } catch (error) {
     console.error(error);
