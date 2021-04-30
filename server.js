@@ -12,4 +12,6 @@ const PORT = process.env.PORT || 5000;
 app.use("/api/devices", deviceSchema);
 app.use("/api/users", userSchema);
 
-app.listen(PORT, console.log(`Server running on Port: ${PORT}`));
+app.get("/", (req, res) => res.send("Connect World!"));
+
+app.listen(PORT, () => console.log(`Server running on Port: ${PORT}`));
