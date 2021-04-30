@@ -1,5 +1,6 @@
 const express = require("express");
 const Device = require("../models/devices");
+const User = require("../models/users");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -60,11 +61,19 @@ router.post("/checkout/:id", async (req, res) => {
       if (hours < 9 || hours > 17) {
         res.send("You can't work this hour");
       } else {
+        const user = await User.findOne({
+          fullname: req.body.lastCheckedOutBy,
+        });
         const device = await Device.findByIdAndUpdate(req.params.id, {
           isCheckedOut: true,
           lastCheckedOutDate: new Date(),
           lastCheckedOutBy: req.body.lastCheckedOutBy,
         });
+        if (user) {
+          await User.findOneAndUpdate(user, {
+            device: req.params.id,
+          });
+        }
         res.send(device);
       }
     } catch (error) {
